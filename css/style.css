@@ -1,0 +1,858 @@
+/* Snake Game - Mobile First CSS */
+
+/* ========================================
+   1. CSS Reset & Base Styles
+========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Color Palette */
+    --bg-primary: #000000;
+    --bg-secondary: #111111;
+    --snake-body: #00FF00;
+    --snake-head: #32CD32;
+    --food-color: #FF0000;
+    --text-primary: #FFFFFF;
+    --text-secondary: #CCCCCC;
+    --ui-elements: #333333;
+    --border-color: #555555;
+    
+    /* Button Colors */
+    --btn-primary: #007bff;
+    --btn-primary-hover: #0056b3;
+    --btn-secondary: #6c757d;
+    --btn-secondary-hover: #545b62;
+    --btn-warning: #ffc107;
+    --btn-warning-hover: #e0a800;
+    --btn-success: #28a745;
+    --btn-success-hover: #1e7e34;
+    --btn-danger: #dc3545;
+    --btn-danger-hover: #c82333;
+    
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    
+    /* Typography */
+    --font-family: 'Courier New', 'Monaco', 'Lucida Console', monospace;
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-md: 16px;
+    --font-size-lg: 20px;
+    --font-size-xl: 24px;
+    --font-size-xxl: 32px;
+    
+    /* Z-index */
+    --z-tooltip: 1000;
+    --z-modal: 900;
+    --z-overlay: 800;
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    overflow-y: auto; /* Allow vertical scroll on mobile */
+    user-select: none; /* ป้องกัน text selection */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    
+    /* ป้องกัน pull-to-refresh และ scroll behavior */
+    overscroll-behavior-x: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ========================================
+   2. Layout Structure
+========================================== */
+.game-container {
+    width: 100vw;
+    min-height: 100vh; /* Use min-height to allow content expansion */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Change to flex-start for mobile */
+    padding: var(--spacing-sm);
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    gap: var(--spacing-sm); /* Add gap between sections */
+}
+
+/* ========================================
+   3. Game Header
+========================================== */
+.game-header {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs); /* Reduced gap */
+    margin-bottom: var(--spacing-sm); /* Reduced margin */
+}
+
+.game-title {
+    font-size: var(--font-size-lg); /* Slightly smaller */
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: var(--spacing-md);
+}
+
+.score-container,
+.high-score-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--ui-elements);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-color);
+    min-width: 80px;
+}
+
+.label {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    font-weight: normal;
+}
+
+.score-value {
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+    color: var(--snake-body);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* ========================================
+   4. Game Canvas
+========================================== */
+.game-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.canvas-container {
+    position: relative;
+    background: var(--bg-primary);
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+}
+
+.game-canvas {
+    display: block;
+    background: var(--bg-primary);
+    border-radius: var(--radius-sm);
+    max-width: 90vw;
+    max-height: 40vh; /* Increase for better mobile visibility */
+    width: 320px; /* Smaller for mobile */
+    height: 320px; /* Smaller for mobile */
+}
+
+/* Game Overlay */
+.game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    z-index: var(--z-overlay);
+}
+
+.overlay-content {
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+.overlay-title {
+    font-size: var(--font-size-xl);
+    font-weight: bold;
+    margin-bottom: var(--spacing-md);
+    color: var(--snake-body);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.overlay-message {
+    font-size: var(--font-size-md);
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* ========================================
+   5. Mobile Controls - Separated Layout for Finger Prevention
+========================================== */
+.controls-section {
+    margin: var(--spacing-sm) 0;
+    width: 100%;
+    max-width: 400px;
+}
+
+.mobile-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 120px; /* Reduced height */
+    padding: var(--spacing-sm);
+    background: var(--ui-elements);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--border-color);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.control-group-left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    align-items: center;
+}
+
+.control-group-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    margin: 0 var(--spacing-md);
+}
+
+.control-group-right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    align-items: center;
+}
+
+.control-btn {
+    background: linear-gradient(145deg, #404040, #2a2a2a);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: var(--font-size-lg); /* Slightly smaller */
+    font-weight: bold;
+    min-height: 50px; /* Slightly smaller */
+    min-width: 50px; /* Slightly smaller */
+    touch-action: manipulation;
+    user-select: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.control-btn:hover {
+    background: linear-gradient(145deg, #505050, #3a3a3a);
+    border-color: var(--snake-body);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.control-btn:active {
+    background: linear-gradient(145deg, #2a2a2a, #404040);
+    transform: translateY(1px) scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    border-color: var(--snake-head);
+}
+
+.control-btn:disabled {
+    background: var(--ui-elements);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Center snake icon container */
+.control-center {
+    background: linear-gradient(145deg, var(--bg-secondary), var(--bg-primary));
+    border: 3px solid var(--snake-body);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.snake-icon {
+    font-size: 2rem; /* Slightly smaller */
+    animation: wiggle 3s ease-in-out infinite;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+    }
+    to {
+        box-shadow: 0 0 25px rgba(0, 255, 0, 0.6);
+    }
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-3deg); }
+    75% { transform: rotate(3deg); }
+}
+
+/* ========================================
+   6. Action Buttons
+========================================== */
+.actions-section {
+    margin: var(--spacing-xs) 0; /* Reduced margin */
+}
+
+.game-actions {
+    display: flex;
+    gap: var(--spacing-xs); /* Reduced gap */
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 400px;
+}
+
+.action-btn {
+    background: var(--btn-primary);
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    padding: var(--spacing-sm) var(--spacing-md); /* Reduced padding */
+    font-size: var(--font-size-sm); /* Smaller font */
+    font-weight: bold;
+    font-family: var(--font-family);
+    min-height: 40px; /* Reduced height */
+    min-width: 80px; /* Reduced width */
+    touch-action: manipulation;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow */
+    position: relative;
+    overflow: hidden;
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.action-btn:hover::before {
+    left: 100%;
+}
+
+.action-btn:hover {
+    background: var(--btn-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.action-btn:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.action-btn:disabled {
+    background: var(--btn-secondary);
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Button Variants */
+.btn-start {
+    background: var(--btn-success);
+}
+
+.btn-start:hover {
+    background: var(--btn-success-hover);
+}
+
+.btn-pause {
+    background: var(--btn-warning);
+    color: var(--bg-primary);
+}
+
+.btn-pause:hover {
+    background: var(--btn-warning-hover);
+}
+
+.btn-restart {
+    background: var(--btn-danger);
+}
+
+.btn-restart:hover {
+    background: var(--btn-danger-hover);
+}
+
+.btn-primary {
+    background: var(--btn-primary);
+}
+
+.btn-primary:hover {
+    background: var(--btn-primary-hover);
+}
+
+.btn-secondary {
+    background: var(--btn-secondary);
+}
+
+.btn-secondary:hover {
+    background: var(--btn-secondary-hover);
+}
+
+/* ========================================
+   7. Instructions (Desktop Only)
+========================================== */
+.instructions-section {
+    width: 100%;
+    max-width: 400px;
+    margin-top: var(--spacing-md);
+}
+
+.instructions {
+    background: var(--ui-elements);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.instructions h3 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-sm);
+    color: var(--snake-body);
+}
+
+.instructions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.instructions li {
+    font-size: var(--font-size-sm);
+    margin: var(--spacing-xs) 0;
+    color: var(--text-secondary);
+}
+
+kbd {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 2px 6px;
+    font-size: var(--font-size-xs);
+    font-family: var(--font-family);
+    color: var(--text-primary);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   8. Game Over Modal
+========================================== */
+.game-over-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+    padding: var(--spacing-lg);
+}
+
+.modal-content {
+    background: var(--ui-elements);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    text-align: center;
+    max-width: 90vw;
+    width: 350px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-title {
+    font-size: var(--font-size-xxl);
+    font-weight: bold;
+    margin-bottom: var(--spacing-lg);
+    color: var(--food-color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.final-score {
+    margin-bottom: var(--spacing-xl);
+}
+
+.final-score p {
+    font-size: var(--font-size-lg);
+    margin: var(--spacing-sm) 0;
+}
+
+.score-highlight {
+    font-size: var(--font-size-xxl);
+    font-weight: bold;
+    color: var(--snake-body);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.new-high-score {
+    color: var(--btn-warning);
+    font-weight: bold;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.modal-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ========================================
+   8. Tooltip System
+========================================== */
+.tooltip {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.95);
+    color: var(--text-primary);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+    max-width: 280px;
+    word-wrap: break-word;
+    white-space: pre-line;
+    z-index: var(--z-tooltip);
+    pointer-events: none;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    
+    /* Animation */
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.tooltip.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tooltip-content {
+    position: relative;
+}
+
+.tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+/* Arrow positioning variants */
+.tooltip.arrow-bottom .tooltip-arrow {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px 6px 0 6px;
+    border-color: rgba(0, 0, 0, 0.95) transparent transparent transparent;
+}
+
+.tooltip.arrow-top .tooltip-arrow {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 0 6px 6px 6px;
+    border-color: transparent transparent rgba(0, 0, 0, 0.95) transparent;
+}
+
+.tooltip.arrow-right .tooltip-arrow {
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    border-width: 6px 0 6px 6px;
+    border-color: transparent transparent transparent rgba(0, 0, 0, 0.95);
+}
+
+.tooltip.arrow-left .tooltip-arrow {
+    top: 50%;
+    right: 100%;
+    transform: translateY(-50%);
+    border-width: 6px 6px 6px 0;
+    border-color: transparent rgba(0, 0, 0, 0.95) transparent transparent;
+}
+
+/* Mobile tooltip adjustments */
+@media (max-width: 768px) {
+    .tooltip {
+        max-width: 240px;
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+}
+
+/* Tooltip hover states for interactive elements */
+[data-tooltip] {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Touch device long-press indication */
+@media (hover: none) and (pointer: coarse) {
+    [data-tooltip]::after {
+        content: '';
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 8px;
+        height: 8px;
+        background: var(--btn-primary);
+        border-radius: 50%;
+        opacity: 0.6;
+        animation: pulse 2s infinite;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* ========================================
+   9. Help Section
+========================================== */
+/* ========================================
+   9. Help Section
+========================================== */
+.help-section {
+    position: relative; /* Changed from fixed to relative for mobile */
+    width: 100%;
+    max-width: 400px;
+    margin-top: var(--spacing-md);
+    z-index: 10; /* Reduced z-index */
+}
+
+.help-details {
+    background: var(--ui-elements);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.help-summary {
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    background: var(--btn-secondary);
+    color: var(--text-primary);
+    font-weight: bold;
+    font-size: var(--font-size-sm);
+    list-style: none;
+    transition: background-color 0.2s ease;
+    user-select: none;
+}
+
+.help-summary::-webkit-details-marker {
+    display: none;
+}
+
+.help-summary:hover {
+    background: var(--btn-secondary-hover);
+}
+
+.help-summary:focus {
+    outline: 2px solid var(--btn-primary);
+    outline-offset: -2px;
+}
+
+.help-content {
+    padding: var(--spacing-md);
+    background: var(--bg-secondary);
+    max-height: 30vh; /* Reduced max height for mobile */
+    overflow-y: auto;
+}
+
+.help-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+}
+
+.help-card {
+    background: var(--ui-elements);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.help-card h3 {
+    font-size: var(--font-size-md);
+    color: var(--snake-body);
+    margin-bottom: var(--spacing-sm);
+    font-weight: bold;
+}
+
+.help-card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.help-card li {
+    padding: var(--spacing-xs) 0;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.help-card li::before {
+    content: '• ';
+    color: var(--snake-body);
+    font-weight: bold;
+    margin-right: var(--spacing-xs);
+}
+
+/* Desktop help grid */
+@media (min-width: 768px) {
+    .help-section {
+        position: static;
+        max-width: 100%;
+        margin-top: var(--spacing-lg);
+    }
+    
+    .help-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .help-content {
+        max-height: none;
+    }
+    
+    /* Desktop layout adjustments */
+    .game-container {
+        justify-content: space-between; /* Center content on desktop */
+        height: 100vh; /* Fixed height on desktop */
+    }
+    
+    .game-canvas {
+        width: 400px; /* Larger on desktop */
+        height: 400px;
+        max-height: 50vh;
+    }
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 767px) {
+    .game-container {
+        padding: var(--spacing-xs);
+        gap: var(--spacing-xs);
+    }
+    
+    .game-header {
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .game-title {
+        font-size: var(--font-size-md);
+    }
+    
+    .controls-section {
+        margin: var(--spacing-xs) 0;
+    }
+    
+    .actions-section {
+        margin: var(--spacing-xs) 0;
+        padding-bottom: var(--spacing-lg); /* Extra padding at bottom */
+    }
+    
+    .mobile-controls {
+        height: 100px; /* Smaller on mobile */
+    }
+    
+    .control-btn {
+        min-height: 45px;
+        min-width: 45px;
+        font-size: var(--font-size-md);
+    }
+    
+    .control-center {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .snake-icon {
+        font-size: 1.5rem;
+    }
+    
+    .action-btn {
+        min-height: 36px;
+        min-width: 70px;
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+}

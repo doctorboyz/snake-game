@@ -1,0 +1,34 @@
+{
+  "name": "snake-game",
+  "version": "1.0.0",
+  "description": "Mobile-first Snake Game with PWA capabilities",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx http-server -p 3333 -o --cors",
+    "start": "npm run dev",
+    "build": "echo '✅ No build step needed - static files ready for deployment'",
+    "deploy:prepare": "./deploy-mvp.sh",
+    "deploy:github": "echo '🚀 Follow DEPLOYMENT.md for GitHub Pages deployment'",
+    "test:local": "npx http-server -p 8080 -o",
+    "preview": "npx http-server -p 3001 -o"
+  },
+  "keywords": [
+    "snake-game",
+    "mobile-game",
+    "pwa",
+    "javascript",
+    "html5-canvas"
+  ],
+  "author": "Snake Game Developer",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/snake-game.git"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
