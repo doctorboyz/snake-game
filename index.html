@@ -188,8 +188,8 @@
             <div class="game-actions">
                 <button id="startBtn" 
                         class="action-btn btn-start" 
-                        aria-label="Start new game">
-                    🚀 Start Game
+                        aria-label="Start or restart game">
+                    ▶️ Play
                 </button>
                 <button id="pauseBtn" 
                         class="action-btn btn-pause" 
@@ -327,6 +327,70 @@
     // Start hidden
     extraSections.classList.add('collapsed');
     updateToggle();
+
+    // --- Improved Start Game Logic ---
+    const startBtn = document.getElementById('startBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const overlay = document.getElementById('gameStatusOverlay');
+    const overlayTitle = document.getElementById('overlayTitle');
+    const overlayMessage = document.getElementById('overlayMessage');
+    const gameOverScreen = document.getElementById('gameOverScreen');
+    let gameState = 'ready'; // 'ready', 'playing', 'gameover', 'paused'
+
+    function setGameState(state) {
+      gameState = state;
+      if (state === 'ready') {
+        startBtn.disabled = false;
+        startBtn.textContent = '▶️ Play';
+        overlay.classList.remove('hidden');
+        overlayTitle.textContent = 'Ready to Play?';
+        overlayMessage.textContent = 'Tap Play to begin!';
+        pauseBtn.disabled = true;
+        restartBtn.disabled = true;
+        gameOverScreen.classList.add('hidden');
+      } else if (state === 'playing') {
+        startBtn.disabled = true;
+        overlay.classList.add('hidden');
+        pauseBtn.disabled = false;
+        restartBtn.disabled = false;
+        gameOverScreen.classList.add('hidden');
+      } else if (state === 'gameover') {
+        startBtn.disabled = false;
+        startBtn.textContent = '🔄 Play Again';
+        overlay.classList.remove('hidden');
+        overlayTitle.textContent = 'Game Over!';
+        overlayMessage.textContent = 'Tap Play Again to restart.';
+        pauseBtn.disabled = true;
+        restartBtn.disabled = true;
+        gameOverScreen.classList.remove('hidden');
+      } else if (state === 'paused') {
+        overlay.classList.remove('hidden');
+        overlayTitle.textContent = 'Paused';
+        overlayMessage.textContent = 'Tap Pause to resume.';
+      }
+    }
+
+    // Initial state
+    setGameState('ready');
+
+    // Hook into your game.js logic:
+    // Call setGameState('playing') when the game actually starts
+    // Call setGameState('gameover') when the game ends
+    // Call setGameState('paused') when paused, and setGameState('playing') to resume
+
+    // Prevent multiple starts
+    startBtn.addEventListener('click', () => {
+      if (gameState === 'ready' || gameState === 'gameover') {
+        setGameState('playing');
+        // You should also call your game.js start/restart logic here
+        if (typeof window.startSnakeGame === 'function') {
+          window.startSnakeGame();
+        }
+      }
+    });
+    // Optionally, listen for game over event from game.js and call setGameState('gameover')
+    // Optionally, listen for pause/resume and call setGameState('paused') or setGameState('playing')
     </script>
 </body>
 </html>

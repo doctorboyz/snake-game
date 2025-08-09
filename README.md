@@ -1,6 +1,6 @@
 # 🐍 Snake Game - Mobile-First Edition
 
-A modern, responsive Snake game built with HTML5 Canvas and JavaScript, optimized for mobile devices with comprehensive tooltip system and touch controls.
+A modern, responsive Snake game built with HTML5 Canvas and JavaScript, optimized for mobile devices with touch controls.
 
 ## 🚀 Live Demo
 
@@ -23,11 +23,10 @@ A modern, responsive Snake game built with HTML5 Canvas and JavaScript, optimize
 - **No Zoom Issues** - Prevents accidental zoom on mobile
 
 ### 🎯 User Experience
-- **Comprehensive Tooltips** - Hover (desktop) or long-press (mobile) for instructions
-- **Visual Feedback** - Button animations and state indicators
-- **Pause/Resume** - Game state management with overlay messages
-- **Share Scores** - Native sharing or clipboard fallback
-- **Help Section** - Expandable game instructions and tips
+**Visual Feedback** - Button animations and state indicators
+**Pause/Resume** - Game state management with overlay messages
+**Share Scores** - Native sharing or clipboard fallback
+**Help Section** - Expandable game instructions and tips
 
 ## 🛠️ Technology Stack
 
@@ -41,17 +40,15 @@ A modern, responsive Snake game built with HTML5 Canvas and JavaScript, optimize
 ## 🎯 Controls
 
 ### Desktop
-- **Arrow Keys** - Move snake (↑↓←→)
-- **Spacebar** - Pause/Resume game
-- **R Key** - Restart game
-- **Enter** - Start new game
-- **Mouse Hover** - Show tooltips
+**Arrow Keys** - Move snake (↑↓←→)
+**Spacebar** - Pause/Resume game
+**R Key** - Restart game
+**Enter** - Start new game
 
 ### Mobile
-- **Virtual Buttons** - Tap directional arrows
-- **Swipe Gestures** - Swipe on canvas to change direction
-- **Long Press** - Show tooltips and instructions
-- **Touch Feedback** - Haptic vibration (if supported)
+**Virtual Buttons** - Tap directional arrows
+**Swipe Gestures** - Swipe on canvas to change direction
+**Touch Feedback** - Haptic vibration (if supported)
 
 ## 📁 Project Structure
 
@@ -73,10 +70,9 @@ snake-game/
 ## 🏗️ Architecture
 
 ### Core Classes
-- **`Snake`** - Snake entity with movement and collision detection
-- **`Food`** - Food generation and rendering
-- **`Particle`** - Visual effects system
-- **`TooltipManager`** - Comprehensive tooltip system for UX
+**`Snake`** - Snake entity with movement and collision detection
+**`Food`** - Food generation and rendering
+**`Particle`** - Visual effects system
 
 ### Game States
 - **Menu** - Initial state, ready to start
@@ -93,10 +89,9 @@ snake-game/
 4. **Accessibility** - High contrast colors and clear feedback
 
 ### User Experience Priority
-1. **Discoverability** - Tooltips guide new users
-2. **Feedback** - Visual and audio confirmation of actions
-3. **Error Prevention** - Intuitive controls prevent mistakes
-4. **Progressive Enhancement** - Works on all devices
+1. **Feedback** - Visual and audio confirmation of actions
+2. **Error Prevention** - Intuitive controls prevent mistakes
+3. **Progressive Enhancement** - Works on all devices
 
 ## 🚀 Getting Started
 
@@ -222,10 +217,10 @@ Update colors in `css/style.css`:
 7. **Open a Pull Request**
 
 ### Development Guidelines
-- **Mobile-First** - Test on mobile devices first
-- **Performance** - Maintain 60fps gameplay
-- **Accessibility** - Ensure all features are accessible
-- **Documentation** - Update tooltips and comments
+**Mobile-First** - Test on mobile devices first
+**Performance** - Maintain 60fps gameplay
+**Accessibility** - Ensure all features are accessible
+**Documentation** - Update comments and documentation
 
 ## 📝 License
 

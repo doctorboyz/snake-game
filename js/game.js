@@ -447,8 +447,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     setupMobileOptimizations();
     
-    console.log('🎮 Snake Game Enhanced Wireframe loaded successfully!');
-    console.log('💡 Tooltips: Hover on desktop, Long-press on mobile');
+    // ...existing code...
 });
 
 function initializeGame() {
@@ -490,7 +489,7 @@ function initializeGame() {
     // Show initial overlay
     showGameOverlay('🐍 Ready to Play!', 'Use virtual controls or arrow keys to start');
     
-    console.log('✅ Game initialization complete');
+    // ...existing code...
 }
 
 function setupCanvas() {
@@ -580,7 +579,7 @@ function setupEventListeners() {
         setTimeout(handleResize, 100);
     });
     
-    console.log('📱 Event listeners setup complete');
+    // ...existing code...
 }
 
 function setupMobileControls() {
@@ -645,7 +644,7 @@ function handleDirectionInput(direction) {
     // Set snake direction
     setSnakeDirection(direction);
     
-    console.log(`🎮 Direction input: ${direction}`);
+    // ...existing code...
 }
 
 function setSnakeDirection(direction) {
@@ -709,7 +708,7 @@ function handleKeyPress(event) {
    5. Game State Management
 ======================================== */
 function startGame() {
-    console.log('🚀 Starting new game...');
+    // ...existing code...
     
     gameState = CONFIG.STATES.PLAYING;
     score = 0;
@@ -732,15 +731,17 @@ function startGame() {
     startGameLoop();
     
     showToastMessage('🎮 Game Started! Use arrow controls to move', 'success');
-    console.log('✅ Game started successfully');
+    // ...existing code...
 }
+
+// Expose startGame for UI integration
+window.startSnakeGame = startGame;
 
 function togglePause() {
     if (gameState === CONFIG.STATES.PLAYING) {
         gameState = CONFIG.STATES.PAUSED;
         pauseBtn.innerHTML = '▶️ Resume';
-        pauseBtn.setAttribute('data-tooltip', 
-            'Resume Game ▶️\\nContinue from current position\\nKeyboard: Press SPACE key\\nMobile: Tap this button\\nStatus: PAUSED → PLAYING');
+    // Tooltip removed
         showGameOverlay('⏸️ Game Paused', 'Press Resume or SPACE to continue');
         
         if (gameLoop) {
@@ -749,25 +750,24 @@ function togglePause() {
         }
         
         showToastMessage('⏸️ Game Paused', 'warning');
-        console.log('⏸️ Game paused');
+        // ...existing code...
     } else if (gameState === CONFIG.STATES.PAUSED) {
         gameState = CONFIG.STATES.PLAYING;
         pauseBtn.innerHTML = '⏸️ Pause';
-        pauseBtn.setAttribute('data-tooltip', 
-            'Pause Game ⏸️\\nTemporarily stop game movement\\nKeyboard: Press SPACE key\\nMobile: Tap this button\\nStatus: PLAYING → PAUSED');
+    // Tooltip removed
         hideGameOverlay();
         
         startGameLoop(); // Resume game loop
         
         showToastMessage('▶️ Game Resumed', 'success');
-        console.log('▶️ Game resumed');
+        // ...existing code...
     }
     
     updateButtonStates();
 }
 
 function restartGame() {
-    console.log('🔄 Restarting game...');
+    // ...existing code...
     
     if (gameLoop) {
         clearInterval(gameLoop);
@@ -780,8 +780,7 @@ function restartGame() {
     
     // Reset UI
     pauseBtn.innerHTML = '⏸️ Pause';
-    pauseBtn.setAttribute('data-tooltip', 
-        'Pause Game ⏸️\\nTemporarily stop game movement\\nKeyboard: Press SPACE key\\nMobile: Tap this button\\nStatus: PLAYING → PAUSED');
+    // Tooltip removed
     updateButtonStates();
     hideGameOverScreen();
     
@@ -792,7 +791,7 @@ function restartGame() {
 }
 
 function gameOver() {
-    console.log('💀 Game Over!');
+    // ...existing code...
     
     gameState = CONFIG.STATES.GAME_OVER;
     
@@ -817,7 +816,7 @@ function gameOver() {
     updateButtonStates();
     showGameOverScreen();
     
-    console.log(`Final Score: ${score}, High Score: ${highScore}`);
+    // ...existing code...
 }
 
 function shareScore() {
