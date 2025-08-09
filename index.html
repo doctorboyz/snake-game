@@ -19,6 +19,91 @@
     <link rel="manifest" href="manifest.json">
     
     <link rel="stylesheet" href="css/style.css">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #111;
+      }
+      .game-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        max-width: 100vw;
+        max-height: 100vh;
+        box-sizing: border-box;
+      }
+      .game-main, .canvas-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        max-width: 100vw;
+      }
+      .game-canvas {
+        width: 90vw;
+        max-width: 400px;
+        height: 90vw;
+        max-height: 400px;
+        background: #1a3d1a;
+        border-radius: 10px;
+        box-shadow: 0 2px 16px #000a;
+        display: block;
+      }
+      @media (min-width: 500px) {
+        .game-canvas {
+          width: 400px;
+          height: 400px;
+        }
+      }
+      .controls-section, .actions-section {
+        width: 100vw;
+        max-width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .mobile-controls {
+        width: 100vw;
+        max-width: 400px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 auto;
+      }
+      .game-actions {
+        width: 100vw;
+        max-width: 400px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 auto;
+      }
+      #extra-sections, .help-section {
+        width: 100vw;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      /* Hide scrollbars and prevent scroll */
+      ::-webkit-scrollbar { display: none; }
+      body { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
 <body>
     <div class="game-container">
@@ -26,13 +111,11 @@
         <header class="game-header">
             <h1 class="game-title">🐍 Snake Game</h1>
             <div class="game-info">
-                <div class="score-container"
-                     data-tooltip="Current Score 🎯&#10;Points earned in this game session&#10;+10 points per food eaten&#10;Bonus points for longer snake&#10;Resets to 0 when game restarts">
+                <div class="score-container">
                     <span class="label">Score:</span>
                     <span id="score" class="score-value">0</span>
                 </div>
-                <div class="high-score-container"
-                     data-tooltip="High Score Record 🏆&#10;Best score achieved across all sessions&#10;Stored locally in your browser&#10;Automatically updated when beaten&#10;Persists between game sessions">
+                <div class="high-score-container">
                     <span class="label">High:</span>
                     <span id="high-score" class="score-value">0</span>
                 </div>
@@ -41,18 +124,15 @@
 
         <!-- Game Canvas Area -->
         <main class="game-main">
-            <div class="canvas-container"
-                 data-tooltip="Game Board Canvas 🎮&#10;Snake movement area (400x400 pixels)&#10;Green background with grid lines&#10;Snake: Green squares | Food: Red squares&#10;Tap/click for touch controls&#10;Optimized for mobile and desktop">
+            <div class="canvas-container">
                 <canvas id="gameCanvas" 
                         class="game-canvas" 
                         width="400" 
-                        height="400"
-                        data-tooltip="Interactive Game Canvas&#10;Your snake moves within this area&#10;Boundaries: Do not hit the walls&#10;Food appears randomly as red squares&#10;Touch-enabled for mobile devices"></canvas>
+                        height="400"></canvas>
                 
                 <!-- Game Status Overlay -->
                 <div id="gameStatusOverlay" 
-                     class="game-overlay hidden"
-                     data-tooltip="Game Status Display&#10;Shows current game state messages&#10;Ready/Playing/Paused/Game Over&#10;Instructions and helpful tips&#10;Auto-hides during active gameplay">
+                     class="game-overlay hidden">
                     <div class="overlay-content">
                         <h2 id="overlayTitle" class="overlay-title">Ready to Play?</h2>
                         <p id="overlayMessage" class="overlay-message">Use arrow buttons or keyboard to control the snake</p>
@@ -64,20 +144,17 @@
         <!-- Mobile Virtual Controls -->
         <section class="controls-section">
             <div class="mobile-controls" 
-                 aria-label="Direction controls"
-                 data-tooltip="Virtual Control Pad 🎮&#10;Separated layout to prevent finger overlap&#10;Left group: Left & Down arrows&#10;Right group: Up & Right arrows&#10;Compatible with touch and keyboard">
+                 aria-label="Direction controls">
                 
                 <!-- Left Control Group: Left and Down -->
                 <div class="control-group-left">
                     <button class="control-btn btn-left" 
                             data-direction="ArrowLeft" 
-                            data-tooltip="Move Snake Left ⬅️&#10;Direction: Leftward&#10;Keyboard: Arrow Left key&#10;Mobile: Tap this button&#10;Action: Snake moves left one grid unit"
                             aria-label="Move snake left">
                         ←
                     </button>
                     <button class="control-btn btn-down" 
                             data-direction="ArrowDown" 
-                            data-tooltip="Move Snake Down ⬇️&#10;Direction: Downward&#10;Keyboard: Arrow Down key&#10;Mobile: Tap this button&#10;Action: Snake moves down one grid unit"
                             aria-label="Move snake down">
                         ↓
                     </button>
@@ -85,8 +162,7 @@
                 
                 <!-- Center: Snake Icon -->
                 <div class="control-group-center">
-                    <div class="control-center" 
-                         data-tooltip="Snake Control Center 🐍&#10;This is your snake!&#10;Use left/right arrows to control direction&#10;Goal: Eat food and grow longer&#10;Avoid: Walls and your own body">
+                    <div class="control-center">
                         <div class="snake-icon">🐍</div>
                     </div>
                 </div>
@@ -95,13 +171,11 @@
                 <div class="control-group-right">
                     <button class="control-btn btn-up" 
                             data-direction="ArrowUp" 
-                            data-tooltip="Move Snake Up ⬆️&#10;Direction: Upward&#10;Keyboard: Arrow Up key&#10;Mobile: Tap this button&#10;Action: Snake moves up one grid unit"
                             aria-label="Move snake up">
                         ↑
                     </button>
                     <button class="control-btn btn-right" 
                             data-direction="ArrowRight" 
-                            data-tooltip="Move Snake Right ➡️&#10;Direction: Rightward&#10;Keyboard: Arrow Right key&#10;Mobile: Tap this button&#10;Action: Snake moves right one grid unit"
                             aria-label="Move snake right">
                         →
                     </button>
@@ -114,21 +188,18 @@
             <div class="game-actions">
                 <button id="startBtn" 
                         class="action-btn btn-start" 
-                        data-tooltip="Start New Game 🚀&#10;Action: Begin new snake game session&#10;Effect: Resets score to 0, places snake at center&#10;Status: Game state changes to PLAYING&#10;Mobile: Tap button&#10;Desktop: Click or press Enter"
                         aria-label="Start new game">
                     🚀 Start Game
                 </button>
                 <button id="pauseBtn" 
                         class="action-btn btn-pause" 
                         disabled
-                        data-tooltip="Pause/Resume Game ⏸️▶️&#10;Pause: Temporarily stop game movement&#10;Resume: Continue from current position&#10;Keyboard Shortcut: SPACE key&#10;Status: Toggles between PLAYING ↔ PAUSED&#10;Mobile: Tap button | Desktop: Space key"
                         aria-label="Pause or resume game">
                     ⏸️ Pause
                 </button>
                 <button id="restartBtn" 
                         class="action-btn btn-restart" 
                         disabled
-                        data-tooltip="Restart Current Game 🔄&#10;Action: Reset current game session&#10;Effect: Score returns to 0, snake repositions&#10;Warning: Current progress will be lost&#10;High Score: Preserved if achieved&#10;Alternative: Use Start Game for fresh session"
                         aria-label="Restart game">
                     🔄 Restart
                 </button>
@@ -139,8 +210,7 @@
         <!-- Collapsed extra sections: instructions/help will be toggled -->
         <div id="extra-sections" class="collapsed">
             <section class="instructions-section desktop-only">
-                <div class="instructions"
-                     data-tooltip="Desktop Instructions 💻&#10;Keyboard controls for desktop users&#10;Arrow keys for movement&#10;Space for pause/resume&#10;Hidden on mobile devices for cleaner UI">
+                <div class="instructions">
                     <h3>How to Play:</h3>
                     <ul>
                         <li><kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> Arrow keys to move</li>
@@ -152,26 +222,22 @@
 
         <!-- Game Over Screen -->
         <div id="gameOverScreen" 
-             class="game-over-modal hidden"
-             data-tooltip="Game Over Modal 🎮&#10;Displays when snake hits wall or self&#10;Shows final score and high score status&#10;Options to play again or share score&#10;Modal overlay dims background">
+             class="game-over-modal hidden">
             <div class="modal-content">
                 <h2 class="modal-title">🎮 Game Over!</h2>
                 <div class="final-score">
                     <p>Final Score: <span id="finalScore" class="score-highlight">0</span></p>
                     <p id="newHighScore" 
-                       class="new-high-score hidden"
-                       data-tooltip="New High Score Achievement! 🏆&#10;Congratulations! You beat your previous record&#10;Your new high score has been saved&#10;Challenge yourself to beat it again!">🎉 New High Score!</p>
+                       class="new-high-score hidden">🎉 New High Score!</p>
                 </div>
                 <div class="modal-actions">
                     <button id="playAgainBtn" 
                             class="action-btn btn-primary"
-                            data-tooltip="Play Again 🎮&#10;Start a fresh new game session&#10;Score resets to 0&#10;Snake returns to center position&#10;High score record maintained&#10;Ready for another challenge!"
                             aria-label="Play again">
                         🎮 Play Again
                     </button>
                     <button id="shareScoreBtn" 
                             class="action-btn btn-secondary"
-                            data-tooltip="Share Your Score 📱&#10;Share your achievement on social media&#10;Copy score text to clipboard&#10;Brag about your snake skills&#10;Challenge friends to beat your score!"
                             aria-label="Share score">
                         📱 Share Score
                     </button>
@@ -180,17 +246,12 @@
         </div>
     </div>
 
-    <!-- Tooltip Container -->
-    <div id="tooltip" class="tooltip hidden" role="tooltip">
-        <div class="tooltip-content"></div>
-        <div class="tooltip-arrow"></div>
-    </div>
+    <!-- Tooltip Container Removed -->
 
     <!-- Help Instructions Section -->
             <div class="help-section">
                 <details class="help-details">
-                    <summary class="help-summary" 
-                             data-tooltip="Game Instructions & Tips 📖&#10;Click to expand/collapse detailed instructions&#10;Learn game rules, controls, and strategies&#10;Mobile and desktop tips included&#10;Perfect for new players!">
+                    <summary class="help-summary">
                         📖 How to Play & Tips
                     </summary>
                     <div class="help-content">
