@@ -8,25 +8,35 @@ const CONFIG = {
     GRID_SIZE: 20,
     CANVAS_WIDTH: 400,
     CANVAS_HEIGHT: 400,
-    FRAME_RATE: 150, // milliseconds
-    
-    // Game States
-    STATES: {
-        MENU: 'menu',
-        PLAYING: 'playing',
-        PAUSED: 'paused',
-        GAME_OVER: 'gameOver'
-    },
+    FRAME_RATE: 150 // milliseconds
+};
+
+// Responsive logical canvas size (used for collision and food)
+let logicalCanvasWidth = CONFIG.CANVAS_WIDTH;
+let logicalCanvasHeight = CONFIG.CANVAS_HEIGHT;
+// Responsive logical canvas size (used for collision and food)
+let logicalCanvasWidth = CONFIG.CANVAS_WIDTH;
+let logicalCanvasHeight = CONFIG.CANVAS_HEIGHT;
+    canvas.width = logicalCanvasWidth;
+    canvas.height = logicalCanvasHeight;
+    ctx.fillStyle = CONFIG.COLORS.BACKGROUND;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Draw grid
+    drawGrid();
+    // Draw game objects if they exist
+    if (food) food.draw();
+    if (snake) snake.draw();
     
     // Colors (matching CSS variables)
     COLORS: {
         BACKGROUND: '#000000',
         SNAKE_BODY: '#00FF00',
-        SNAKE_HEAD: '#32CD32',
-        FOOD: '#FF0000',
-        TEXT: '#FFFFFF',
-        GRID: '#222222'
-    },
+        // Use logical canvas size for collision
+        const gridW = logicalCanvasWidth / CONFIG.GRID_SIZE;
+        const gridH = logicalCanvasHeight / CONFIG.GRID_SIZE;
+        if (head.x < 0 || head.x >= gridW || head.y < 0 || head.y >= gridH) {
+            return true;
+        }
     
     // Directions
     DIRECTIONS: {
@@ -39,8 +49,8 @@ const CONFIG = {
 
 // Game State
 let gameState = CONFIG.STATES.MENU;
-let score = 0;
-let highScore = parseInt(localStorage.getItem('snakeHighScore')) || 0;
+        const gridWidth = logicalCanvasWidth / CONFIG.GRID_SIZE;
+        const gridHeight = logicalCanvasHeight / CONFIG.GRID_SIZE;
 let gameLoop = null;
 let snake, food;
 let currentDirection = CONFIG.DIRECTIONS.RIGHT;
@@ -57,6 +67,7 @@ let gameOverScreen, gameStatusOverlay;
 // Tooltip Manager Instance
 let tooltipManager;
 
+    window.addEventListener('resize', handleResize);
 /* =======================================
    2. Game Classes
 ======================================== */
