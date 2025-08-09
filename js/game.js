@@ -148,8 +148,9 @@ class Snake {
     }
     
     changeDirection(newDirection) {
-        // Prevent reverse direction
+        // Prevent reverse direction: ignore input if it's a direct reverse
         if (newDirection.x === -this.direction.x && newDirection.y === -this.direction.y) {
+            // Do nothing, keep current direction
             return;
         }
         this.direction = newDirection;
@@ -639,23 +640,28 @@ function handleDirectionInput(direction) {
 function setSnakeDirection(direction) {
     if (!snake) return;
     
+    // Prevent reverse direction: only update nextDirection if not direct reverse
+    let candidate = null;
     switch(direction) {
         case 'ArrowUp':
         case 'up':
-            nextDirection = CONFIG.DIRECTIONS.UP;
+            candidate = CONFIG.DIRECTIONS.UP;
             break;
         case 'ArrowDown':
         case 'down':
-            nextDirection = CONFIG.DIRECTIONS.DOWN;
+            candidate = CONFIG.DIRECTIONS.DOWN;
             break;
         case 'ArrowLeft':
         case 'left':
-            nextDirection = CONFIG.DIRECTIONS.LEFT;
+            candidate = CONFIG.DIRECTIONS.LEFT;
             break;
         case 'ArrowRight':
         case 'right':
-            nextDirection = CONFIG.DIRECTIONS.RIGHT;
+            candidate = CONFIG.DIRECTIONS.RIGHT;
             break;
+    }
+    if (candidate && !(candidate.x === -snake.direction.x && candidate.y === -snake.direction.y)) {
+        nextDirection = candidate;
     }
 }
 

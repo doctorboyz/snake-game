@@ -136,17 +136,19 @@
         </section>
 
         <!-- Instructions (Desktop) -->
-        <section class="instructions-section desktop-only">
-            <div class="instructions"
-                 data-tooltip="Desktop Instructions 💻&#10;Keyboard controls for desktop users&#10;Arrow keys for movement&#10;Space for pause/resume&#10;Hidden on mobile devices for cleaner UI">
-                <h3>How to Play:</h3>
-                <ul>
-                    <li><kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> Arrow keys to move</li>
-                    <li><kbd>Space</kbd> to pause/resume</li>
-                    <li><kbd>R</kbd> to restart (optional)</li>
-                </ul>
-            </div>
-        </section>
+        <!-- Collapsed extra sections: instructions/help will be toggled -->
+        <div id="extra-sections" class="collapsed">
+            <section class="instructions-section desktop-only">
+                <div class="instructions"
+                     data-tooltip="Desktop Instructions 💻&#10;Keyboard controls for desktop users&#10;Arrow keys for movement&#10;Space for pause/resume&#10;Hidden on mobile devices for cleaner UI">
+                    <h3>How to Play:</h3>
+                    <ul>
+                        <li><kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> Arrow keys to move</li>
+                        <li><kbd>Space</kbd> to pause/resume</li>
+                        <li><kbd>R</kbd> to restart (optional)</li>
+                    </ul>
+                </div>
+            </section>
 
         <!-- Game Over Screen -->
         <div id="gameOverScreen" 
@@ -185,63 +187,85 @@
     </div>
 
     <!-- Help Instructions Section -->
-    <div class="help-section">
-        <details class="help-details">
-            <summary class="help-summary" 
-                     data-tooltip="Game Instructions & Tips 📖&#10;Click to expand/collapse detailed instructions&#10;Learn game rules, controls, and strategies&#10;Mobile and desktop tips included&#10;Perfect for new players!">
-                📖 How to Play & Tips
-            </summary>
-            <div class="help-content">
-                <div class="help-grid">
-                    <div class="help-card">
-                        <h3>🎯 Game Objective</h3>
-                        <ul>
-                            <li>Control the snake to eat food (red squares)</li>
-                            <li>Grow longer with each food consumed</li>
-                            <li>Avoid hitting walls or your own body</li>
-                            <li>Try to achieve the highest score possible!</li>
-                            <li>Each food gives +10 points</li>
-                        </ul>
+            <div class="help-section">
+                <details class="help-details">
+                    <summary class="help-summary" 
+                             data-tooltip="Game Instructions & Tips 📖&#10;Click to expand/collapse detailed instructions&#10;Learn game rules, controls, and strategies&#10;Mobile and desktop tips included&#10;Perfect for new players!">
+                        📖 How to Play & Tips
+                    </summary>
+                    <div class="help-content">
+                        <div class="help-grid">
+                            <div class="help-card">
+                                <h3>🎯 Game Objective</h3>
+                                <ul>
+                                    <li>Control the snake to eat food (red squares)</li>
+                                    <li>Grow longer with each food consumed</li>
+                                    <li>Avoid hitting walls or your own body</li>
+                                    <li>Try to achieve the highest score possible!</li>
+                                    <li>Each food gives +10 points</li>
+                                </ul>
+                            </div>
+                            <div class="help-card">
+                                <h3>🕹️ Controls</h3>
+                                <ul>
+                                    <li><strong>Mobile:</strong> Tap virtual arrow buttons</li>
+                                    <li><strong>Desktop:</strong> Use keyboard arrow keys</li>
+                                    <li><strong>Pause:</strong> Tap pause button or press SPACE</li>
+                                    <li><strong>Direction:</strong> Snake follows your last input</li>
+                                    <li><strong>Speed:</strong> Game speed increases with score</li>
+                                </ul>
+                            </div>
+                            <div class="help-card">
+                                <h3>📱 Mobile Optimization</h3>
+                                <ul>
+                                    <li>Virtual button layout in cross formation</li>
+                                    <li>Touch-responsive controls with haptic feedback</li>
+                                    <li>Works in both portrait and landscape modes</li>
+                                    <li>Pinch-to-zoom disabled for stable gameplay</li>
+                                    <li>Tooltips available via long-press</li>
+                                </ul>
+                            </div>
+                            <div class="help-card">
+                                <h3>🏆 Scoring & Strategy</h3>
+                                <ul>
+                                    <li>Base points: 10 per food eaten</li>
+                                    <li>Bonus for longer snake chains</li>
+                                    <li>High score saved locally in browser</li>
+                                    <li>Plan your path to avoid corners</li>
+                                    <li>Use edges strategically but carefully</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="help-card">
-                        <h3>🕹️ Controls</h3>
-                        <ul>
-                            <li><strong>Mobile:</strong> Tap virtual arrow buttons</li>
-                            <li><strong>Desktop:</strong> Use keyboard arrow keys</li>
-                            <li><strong>Pause:</strong> Tap pause button or press SPACE</li>
-                            <li><strong>Direction:</strong> Snake follows your last input</li>
-                            <li><strong>Speed:</strong> Game speed increases with score</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="help-card">
-                        <h3>📱 Mobile Optimization</h3>
-                        <ul>
-                            <li>Virtual button layout in cross formation</li>
-                            <li>Touch-responsive controls with haptic feedback</li>
-                            <li>Works in both portrait and landscape modes</li>
-                            <li>Pinch-to-zoom disabled for stable gameplay</li>
-                            <li>Tooltips available via long-press</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="help-card">
-                        <h3>🏆 Scoring & Strategy</h3>
-                        <ul>
-                            <li>Base points: 10 per food eaten</li>
-                            <li>Bonus for longer snake chains</li>
-                            <li>High score saved locally in browser</li>
-                            <li>Plan your path to avoid corners</li>
-                            <li>Use edges strategically but carefully</li>
-                        </ul>
-                    </div>
-                </div>
+                </details>
             </div>
-        </details>
-    </div>
+        </div>
 
+    <!-- Toggle button for extra sections -->
+    <button id="toggle-extra" style="position:fixed;bottom:12px;right:12px;z-index:1000;min-width:44px;min-height:44px;font-size:1.1em;">Show Help & Tips</button>
     <!-- Scripts -->
     <script src="js/game.js"></script>
+    <script>
+    // Toggle extra sections (help/instructions)
+    const toggleBtn = document.getElementById('toggle-extra');
+    const extraSections = document.getElementById('extra-sections');
+    let extraVisible = false;
+    function updateToggle() {
+      if (extraVisible) {
+        extraSections.classList.remove('collapsed');
+        toggleBtn.textContent = 'Hide Help & Tips';
+      } else {
+        extraSections.classList.add('collapsed');
+        toggleBtn.textContent = 'Show Help & Tips';
+      }
+    }
+    toggleBtn.addEventListener('click', () => {
+      extraVisible = !extraVisible;
+      updateToggle();
+    });
+    // Start hidden
+    extraSections.classList.add('collapsed');
+    updateToggle();
+    </script>
 </body>
 </html>
